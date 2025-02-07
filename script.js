@@ -26,36 +26,48 @@ function predictScore() {
   const hackAdjustments = [0, 0, 0, -0.1, -0.2, -0.35];
   returnRatio += returnRatio * hackAdjustments[crossBatHacks];
 
-  // Calculate predicted score
+  // Determine total overs and overs at tea/drinks
   const totalOvers = gameType === "twoDay" ? 75 : 40;
-  const oversRemaining = totalOvers - (gameType === "twoDay" ? 37 : 20);
+  const oversAtBreak = gameType === "twoDay" ? 37 : 20;
+  const oversRemaining = totalOvers - oversAtBreak;
+
+  // Predicted final score
   const predictedScore = runsAtTea + Math.round(runsAtTea * returnRatio);
 
-  // Display results
+  // Display the predicted score
   document.getElementById("predictedScore").innerHTML = `Predicted Total Score: ${predictedScore}`;
 
-  // Generate graph
-  generateGraph(runsAtTea, returnRatio, oversRemaining, totalOvers);
+  // Generate the full overs graph
+  generateGraph(runsAtTea, returnRatio, oversAtBreak, oversRemaining, totalOvers);
 }
 
-function generateGraph(runsAtTea, returnRatio, oversRemaining, totalOvers) {
-  const runRate = (runsAtTea * returnRatio) / oversRemaining;
-  const data = [];
-  let cumulativeRuns = runsAtTea;
-
-  for (let i = 1; i <= oversRemaining; i++) {
-    cumulativeRuns += runRate * (1 + i / oversRemaining); // Increasing run rate
+function generateGraph(runsAtTea, returnRatio, oversAtBreak, oversRemaining, totalOvers) {
+  let data = [];
+  let labels = [];
+  let cumulativeRuns = 0;
+  
+  // First overs (straight line)
+  let runRateBeforeBreak = runsAtTea / oversAtBreak;
+  for (let i = 1; i <= oversAtBreak; i++) {
+    cumulativeRuns += runRateBeforeBreak;
     data.push(cumulativeRuns);
+    labels.push(i);
   }
 
+  // Overs after tea with increasing run rate
+  let runRateAfterBreak = (runsAtTea * returnRatio) / oversRemaining;
+  for (let i = 1; i <= oversRemaining; i++) {
+    cumulativeRuns += runRateAfterBreak * (1 + i / oversRemaining); // Simulating a gradual increase
+    data.push(cumulativeRuns);
+    labels.push(oversAtBreak + i);
+  }
+
+  // Draw Chart
   const ctx = document.getElementById("predictionChart").getContext("2d");
   new Chart(ctx, {
     type: "line",
     data: {
-      labels: Array.from(
-        { length: oversRemaining },
-        (_, i) => i + (totalOvers - oversRemaining) + 1
-      ),
+      labels: labels,
       datasets: [
         {
           label: "Predicted Score Progression",
