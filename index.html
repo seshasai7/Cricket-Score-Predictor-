@@ -9,66 +9,33 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>The Grade Cricketer Total Score Predictor</h1>
-      <p class="subtext">Updated 2026 edition with stronger validation, live projection scenarios, and smoother charting.</p>
-    </header>
-
+    <h1>The Grade Cricketer Total Score Predictor</h1>
+    <p>“Researched and developed by Dr. Andrew Cameron, utilizing over 250 years of cricket data.”</p>
+    
     <form id="scorePredictorForm">
-      <div class="grid">
-        <div>
-          <label for="gameType">Game Type</label>
-          <select id="gameType">
-            <option value="twoDay">Two-Day Game (75 overs)</option>
-            <option value="oneDay">One-Day Game (40 overs)</option>
-          </select>
-        </div>
+      <label for="gameType">Game Type:</label>
+      <select id="gameType">
+        <option value="twoDay">Two-Day Game (75 overs)</option>
+        <option value="oneDay">One-Day Game (40 overs)</option>
+      </select>
 
-        <div>
-          <label for="wicketsDown">Wickets Down</label>
-          <input type="number" id="wicketsDown" min="0" max="9" required>
-        </div>
+      <label for="wicketsDown">Wickets Down:</label>
+      <input type="number" id="wicketsDown" min="0" max="9" required>
 
-        <div>
-          <label for="runsAtTea">Runs on Board at Tea/Drinks</label>
-          <input type="number" id="runsAtTea" min="0" required>
-        </div>
+      <label for="runsAtTea">Runs on Board at Tea/Drinks:</label>
+      <input type="number" id="runsAtTea" min="0" required>
 
-        <div>
-          <label for="temperature">Temperature (°C)</label>
-          <input type="number" id="temperature" min="0" max="45" required>
-        </div>
+      <label for="temperature">Temperature (°C):</label>
+      <input type="number" id="temperature" min="0" max="39" required>
 
-        <div>
-          <label for="crossBatHacks">Cross Bat Hacks</label>
-          <input type="number" id="crossBatHacks" min="0" max="5" required>
-        </div>
-      </div>
+      <label for="crossBatHacks">Number of Cross Bat Hacks:</label>
+      <input type="number" id="crossBatHacks" min="1" max="5" required>
 
       <button type="button" id="predictButton">Predict Score</button>
-      <p id="errorMessage" class="error" aria-live="polite"></p>
     </form>
 
-    <section id="resultPanel" class="result-panel hidden">
-      <h2 id="predictedScore"></h2>
-      <div class="insights">
-        <article class="insight-card">
-          <h3>Conservative</h3>
-          <p id="conservativeScore"></p>
-        </article>
-        <article class="insight-card">
-          <h3>Most Likely</h3>
-          <p id="likelyScore"></p>
-        </article>
-        <article class="insight-card">
-          <h3>Aggressive</h3>
-          <p id="aggressiveScore"></p>
-        </article>
-      </div>
-      <p id="runRateSummary" class="run-rate"></p>
-    </section>
-
     <canvas id="predictionChart" width="800" height="400"></canvas>
+    <div id="predictedScore"></div>
   </div>
 
   <script src="script.js"></script>
